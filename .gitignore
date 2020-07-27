@@ -1,3 +1,4 @@
 /WebApi02/WebApi02/bin/
 obj/
 .vs/
+*.user
