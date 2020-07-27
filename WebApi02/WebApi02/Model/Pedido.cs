@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi02.Model
 {
-    public class Pedido
+    public class Pedido : IModel
     {
-        public long Id { set; get; }
-        public string Codigo { set; get; }
-        public string Estado { set; get; }
-        public DateTime Fecha { set; get; }
-        public List<Producto> ListaProducto { set; get; }
-        public int Total { set; get; }
-
+        [Key]
+        public Guid Id { set; get; }
+        public long Secuencial { get; set; }
+        public Cliente Cliente { get; set; }
+        public Estado Estado { set; get; }
+        public DateTime FechaCreado { set; get; }
+        public float TotalPedido { set; get; }
+        public List<DetallePedido> DetallePedidos { get; set; }
     }
 }

@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi02.Model
 {
-    public class Cliente
+    public class Cliente : IModel
     {
-        public long Id { set; get; }
-        public string Nombre { set; get; }
-        public string Apellido { set; get; }
+        [Key]
+        public Guid Id { set; get; }
+        [StringLength(20)]
         public string RUT { set; get; }
+        [StringLength(250)]
+        public string RazonSocial { set; get; }
+        
 
     }
 }

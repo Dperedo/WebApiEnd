@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi02.Model
 {
-    public class Estado
+    public class Estado : IModel
     {
-        public Estado()
-        {
-            this.EstadoProducto = "Pendiente";
-        }
-        public long Id { set; get; }
-        public string EstadoProducto { set; get; }
+        [Key]
+        public Guid Id { set; get; }
+        [StringLength(50)]
+        public string Nombre { set; get; }
     }
 }

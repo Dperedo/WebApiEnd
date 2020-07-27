@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi02.Model
 {
-    public class DetallePedido
+    public class DetallePedido : IModel
     {
-        public long Id { set; get; }
-        public string DetallesDelPedido { set; get; }
-        
+        [Key]
+        public Guid Id { set; get; }
+        public Producto Producto { get; set; }
+        public int Cantidad { get; set; }        
     }
 }

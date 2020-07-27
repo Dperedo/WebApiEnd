@@ -29,7 +29,7 @@ namespace WebApi02.Controllers
 
         // GET: api/Clientes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cliente>> GetCliente(long id)
+        public async Task<ActionResult<Cliente>> GetCliente(Guid id)
         {
             var cliente = await _context.Clientes.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace WebApi02.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(long id, Cliente cliente)
+        public async Task<IActionResult> PutCliente(Guid id, Cliente cliente)
         {
             if (id != cliente.Id)
             {
@@ -87,7 +87,7 @@ namespace WebApi02.Controllers
 
         // DELETE: api/Clientes/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Cliente>> DeleteCliente(long id)
+        public async Task<ActionResult<Cliente>> DeleteCliente(Guid id)
         {
             var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null)
@@ -101,7 +101,7 @@ namespace WebApi02.Controllers
             return cliente;
         }
 
-        private bool ClienteExists(long id)
+        private bool ClienteExists(Guid id)
         {
             return _context.Clientes.Any(e => e.Id == id);
         }
