@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using WebApi02.Model;
+using WebApi02.Repository;
 
 namespace WebApi02
 {
@@ -25,6 +28,9 @@ namespace WebApi02
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ContenerContext>(opt =>
+            opt.UseSqlServer("Server=localhost\\sql2017;Database=Webapi02 ;User Id=sa; Password=sa1105"));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllers();
         }
 
