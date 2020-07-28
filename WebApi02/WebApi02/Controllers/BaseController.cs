@@ -20,10 +20,34 @@ namespace WebApi02.Controllers
             repository = _repository;
         }
 
-        [HttpGet]
-        public IActionResult Todos()
+        //[HttpGet]
+        //public IActionResult Todos()
+        //{
+        //    return Ok(repository.GetAll());
+        //}
+
+        [HttpGet("{id}")]
+        public IActionResult MostrarSolo(Guid id)
         {
-            return Ok(repository.GetAll());
+            return Ok(repository.GetByIdAsync(id));
+        }
+
+        [HttpPost]
+        public IActionResult Insertar(Guid id)
+        {
+            return Ok(repository.InsertAsync(id));
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Eliminar(Guid id)
+        {
+            return Ok(repository.DeleteAsync(id));
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Actualizar(Guid id)
+        {
+            return Ok(repository.UpdateAsync(id));
         }
 
         //Implementar demás métodos CRUD: Get por ID, Update, Insert, Delete.

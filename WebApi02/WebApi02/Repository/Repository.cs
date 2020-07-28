@@ -33,14 +33,18 @@ namespace WebApi02.Repository
             return await this.context.Set<T>().SingleOrDefaultAsync(i => i.Id == id);
         }
 
-        public Task<int> InsertAsync(T entity)
+        public async Task<int> InsertAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var parainsertar = await this.context.Set<T>().SingleOrDefaultAsync(i => i.Id == id);
+            this.context.Set<T>().Add(parainsertar);
+            return await this.context.SaveChangesAsync();
         }
 
-        public Task<int> UpdateAsync(T entity)
+        public async Task<int> UpdateAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var paraactualizar = await this.context.Set<T>().SingleOrDefaultAsync(i => i.Id == id);
+            this.context.Set<T>().Update(paraactualizar);
+            return await this.context.SaveChangesAsync();
         }
     }
 }

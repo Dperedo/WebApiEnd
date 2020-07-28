@@ -9,8 +9,8 @@ namespace WebApi02.Repository
     {
         IQueryable<T> GetAll();
         Task<T> GetByIdAsync(Guid id);
-        Task<int> InsertAsync(T entity);
-        Task<int> UpdateAsync(T entity);
+        Task<int> InsertAsync(Guid id);
+        Task<int> UpdateAsync(Guid id);
         Task<int> DeleteAsync(Guid id);
     }
 }

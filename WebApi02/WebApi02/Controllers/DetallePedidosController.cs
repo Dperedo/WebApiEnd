@@ -11,41 +11,41 @@ namespace WebApi02.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientesController : BaseController<Cliente>
+    public class DetallePedidosController : BaseController<DetallePedido>
     {
-        private IRepository<Cliente> repository;
+        private IRepository<DetallePedido> repository;
 
-        public ClientesController(IRepository<Cliente> _repository) : base(_repository)
+        public DetallePedidosController(IRepository<DetallePedido> _repository) : base(_repository)
         {
             repository = _repository;
         }
 
         [HttpGet]
-        public IActionResult ListarCliente()
+        public IActionResult ListarDetallePedido()
         {
             return Ok(repository.GetAll());
         }
 
         [HttpGet("{id}")]
-        public IActionResult MostrarSoloCliente(Guid id)
+        public IActionResult MostrarSoloDetallePedido(Guid id)
         {
             return Ok(repository.GetByIdAsync(id));
         }
 
         [HttpPost]
-        public IActionResult InsertarCliente(Guid id)
+        public IActionResult InsertarDetallePedido(Guid id)
         {
             return Ok(repository.InsertAsync(id));
         }
 
         [HttpDelete("{id}")]
-        public IActionResult EliminarCliente(Guid id)
+        public IActionResult EliminarDetallePedido(Guid id)
         {
             return Ok(repository.DeleteAsync(id));
         }
 
         [HttpPut("{id}")]
-        public IActionResult ActualizarCliente(Guid id)
+        public IActionResult ActualizarDetallePedido(Guid id)
         {
             return Ok(repository.UpdateAsync(id));
         }
