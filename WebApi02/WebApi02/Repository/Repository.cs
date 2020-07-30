@@ -30,20 +30,19 @@ namespace WebApi02.Repository
 
         public async Task<T> GetByIdAsync(Guid id)
         {
-            return await this.context.Set<T>().SingleOrDefaultAsync(i => i.Id == id);
+            return await context.Set<T>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<int> InsertAsync(Guid id)
+        public async Task<T> InsertAsync(T entity)
         {
-            var parainsertar = await this.context.Set<T>().SingleOrDefaultAsync(i => i.Id == id);
-            this.context.Set<T>().Add(parainsertar);
-            return await this.context.SaveChangesAsync();
+            this.context.Set<T>().Add(entity);
+            await this.context.SaveChangesAsync();
+            return entity;
         }
 
-        public async Task<int> UpdateAsync(Guid id)
+        public async Task<int> UpdateAsync(T entity)
         {
-            var paraactualizar = await this.context.Set<T>().SingleOrDefaultAsync(i => i.Id == id);
-            this.context.Set<T>().Update(paraactualizar);
+            this.context.Set<T>().Update(entity);
             return await this.context.SaveChangesAsync();
         }
     }

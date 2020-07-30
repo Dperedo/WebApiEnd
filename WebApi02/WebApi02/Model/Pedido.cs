@@ -8,6 +8,10 @@ namespace WebApi02.Model
 {
     public class Pedido : IModel
     {
+        public Pedido()
+        {
+            this.FechaCreado = DateTime.Now;
+        }
         [Key]
         public Guid Id { set; get; }
         public long Secuencial { get; set; }

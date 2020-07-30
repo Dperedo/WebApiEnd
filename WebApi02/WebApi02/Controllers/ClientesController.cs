@@ -20,34 +20,5 @@ namespace WebApi02.Controllers
             repository = _repository;
         }
 
-        [HttpGet]
-        public IActionResult ListarCliente()
-        {
-            return Ok(repository.GetAll());
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult MostrarSoloCliente(Guid id)
-        {
-            return Ok(repository.GetByIdAsync(id));
-        }
-
-        [HttpPost]
-        public IActionResult InsertarCliente(Guid id)
-        {
-            return Ok(repository.InsertAsync(id));
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult EliminarCliente(Guid id)
-        {
-            return Ok(repository.DeleteAsync(id));
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult ActualizarCliente(Guid id)
-        {
-            return Ok(repository.UpdateAsync(id));
-        }
     }
 }

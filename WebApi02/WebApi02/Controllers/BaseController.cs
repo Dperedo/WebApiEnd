@@ -20,34 +20,63 @@ namespace WebApi02.Controllers
             repository = _repository;
         }
 
-        //[HttpGet]
-        //public IActionResult Todos()
-        //{
-        //    return Ok(repository.GetAll());
-        //}
+        [HttpGet]
+        public IActionResult Todos()
+        {
+            return Ok(repository.GetAll());
+        }
 
         [HttpGet("{id}")]
-        public IActionResult MostrarSolo(Guid id)
+        public async Task<IActionResult> MostrarSolo(Guid id)
         {
-            return Ok(repository.GetByIdAsync(id));
+            var item = await repository.GetByIdAsync(id);
+            if (item == null)
+            {
+                return NotFound("no encontrado");
+            }
+            return Ok(item);
         }
 
         [HttpPost]
-        public IActionResult Insertar(Guid id)
+        public async Task<IActionResult> Insertar(T entity)
         {
-            return Ok(repository.InsertAsync(id));
+            var item = await repository.GetByIdAsync(entity.Id);
+            if (item != null)
+            {
+                if (entity.Id == item.Id)
+                {
+                    return NotFound("ya existe");
+                }
+            }
+            return Ok(await repository.InsertAsync(entity));
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Eliminar(Guid id)
+        public async Task<IActionResult> Eliminar(Guid id)
         {
-            return Ok(repository.DeleteAsync(id));
+            var item = await repository.GetByIdAsync(id);
+            if (item == null)
+            {
+                return NotFound("no encontrado");
+            }
+            await repository.DeleteAsync(id);
+            return NoContent();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Actualizar(Guid id)
+        public async Task<IActionResult> Actualizar(Guid id, T entity)
         {
-            return Ok(repository.UpdateAsync(id));
+            if(id != entity.Id)
+            {
+                return BadRequest();
+            }
+            var item = await repository.GetByIdAsync(id);
+            if (item == null)
+            {
+                return NotFound("no encontrado");
+            }
+            await repository.UpdateAsync(entity);
+            return Ok("Agregado");
         }
 
         //Implementar demás métodos CRUD: Get por ID, Update, Insert, Delete.

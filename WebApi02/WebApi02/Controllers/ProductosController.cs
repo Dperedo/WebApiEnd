@@ -21,34 +21,6 @@ namespace WebApi02.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult ListarProducto()
-        {
-            return Ok(repository.GetAll());
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult MostrarSoloProducto(Guid id)
-        {
-            return Ok(repository.GetByIdAsync(id));
-        }
-
-        [HttpPost]
-        public IActionResult InsertarProducto(Guid id)
-        {
-            return Ok(repository.InsertAsync(id));
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult EliminarProducto(Guid id)
-        {
-            return Ok(repository.DeleteAsync(id));
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult ActualizarProducto(Guid id)
-        {
-            return Ok(repository.UpdateAsync(id));
-        }
+        
     }
 }
