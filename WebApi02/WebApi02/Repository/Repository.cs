@@ -30,6 +30,11 @@ namespace WebApi02.Repository
 
         public async Task<T> GetByIdAsync(Guid id)
         {
+            return await context.Set<T>().SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<T> GetNoTrackedByIdAsync(Guid id)
+        {
             return await context.Set<T>().AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 

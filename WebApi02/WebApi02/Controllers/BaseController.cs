@@ -38,9 +38,9 @@ namespace WebApi02.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insertar(T entity)
+        public virtual async Task<IActionResult> Insertar(T entity)
         {
-            var item = await repository.GetByIdAsync(entity.Id);
+            var item = await repository.GetNoTrackedByIdAsync(entity.Id);
             if (item != null)
             {
                 if (entity.Id == item.Id)
@@ -54,7 +54,7 @@ namespace WebApi02.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Eliminar(Guid id)
         {
-            var item = await repository.GetByIdAsync(id);
+            var item = await repository.GetNoTrackedByIdAsync(id);
             if (item == null)
             {
                 return NotFound("no encontrado");
@@ -70,7 +70,7 @@ namespace WebApi02.Controllers
             {
                 return BadRequest();
             }
-            var item = await repository.GetByIdAsync(id);
+            var item = await repository.GetNoTrackedByIdAsync(id);
             if (item == null)
             {
                 return NotFound("no encontrado");
