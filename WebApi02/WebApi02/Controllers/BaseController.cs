@@ -45,7 +45,7 @@ namespace WebApi02.Controllers
             {
                 if (entity.Id == item.Id)
                 {
-                    return NotFound("ya existe");
+                    return Conflict("ya existe");
                 }
             }
             return Ok(await repository.InsertAsync(entity));
