@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApi02.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi02.Repository
 {
@@ -49,6 +50,13 @@ namespace WebApi02.Repository
         {
             this.context.Set<T>().Update(entity);
             return await this.context.SaveChangesAsync();
+        }
+        public ContenerContext Context
+        {
+            get
+            {
+                return context;
+            }
         }
     }
 }

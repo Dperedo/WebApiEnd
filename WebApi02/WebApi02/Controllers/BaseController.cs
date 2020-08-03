@@ -21,13 +21,13 @@ namespace WebApi02.Controllers
         }
 
         [HttpGet]
-        public IActionResult Todos()
+        public virtual IActionResult Todos()
         {
             return Ok(repository.GetAll());
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> MostrarSolo(Guid id)
+        public virtual async Task<IActionResult> MostrarSolo(Guid id)
         {
             var item = await repository.GetByIdAsync(id);
             if (item == null)
@@ -52,7 +52,7 @@ namespace WebApi02.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Eliminar(Guid id)
+        public virtual async Task<IActionResult> Eliminar(Guid id)
         {
             var item = await repository.GetNoTrackedByIdAsync(id);
             if (item == null)
@@ -64,7 +64,7 @@ namespace WebApi02.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Actualizar(Guid id, T entity)
+        public virtual async Task<IActionResult> Actualizar(Guid id, T entity)
         {
             if(id != entity.Id)
             {

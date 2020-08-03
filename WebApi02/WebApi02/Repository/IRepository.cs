@@ -14,5 +14,6 @@ namespace WebApi02.Repository
         Task<T> InsertAsync(T entity);
         Task<int> UpdateAsync(T entity);
         Task<int> DeleteAsync(Guid id);
+        ContenerContext Context { get; }
     }
 }
