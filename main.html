@@ -1,0 +1,66 @@
+﻿<html>
+	<head>
+	     <meta charset="UTF-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<title>Mi página de ejemplo</title>
+	</head>
+	<body>
+    
+        <h1>Listado de Clientes mediante Servicio REST</h1>	    
+        <table id="tablaClientes">	        
+            <tr>	            
+                <th>RUT</th>
+                <th>Razón Social</th>
+                <th>Acción</th>
+            </tr>	    
+        </table>	
+    <h2>Pedidos del Cliente seleccionado</h2>	    
+    <div id="detalleClientes">	        	    
+
+    </div>
+    <script>
+
+    var baseURL = "https://localhost:44378/";
+
+       $(function () {
+        
+        $.ajax({
+        url: baseURL + 'api/clientes',            
+        method: 'GET',
+        type: 'json',
+        headers: { 'Access-Control-Allow-Origin': baseURL },
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+        });
+
+
+    //Al cargar la página recuperamos el listado de clientes
+    $.getJSON(baseURL + "api/clientes",
+        function (data) {
+            //Por cada uno creamos una fila de HTML
+            $.each(data, function (key, val) {
+                var fila = "<tr><td>" + val.rut + "</td><td>" + val.razonSocial + "</td><td><a href='#' onclick='cargarDetalle(event,\"" + val.id + "\");'>Ver Detalle</a></td></tr>";
+                //Añadimos la fila a la tabla
+                $(fila).appendTo("#tablaClientes");
+            });
+        }
+        );
+    });
+
+        function cargarDetalle(event,idcliente) {
+            event.preventDefault();
+            
+            $.getJSON(baseURL + "api/clientes/" + idcliente, function (data) {
+                var detalle = "<b>Id.: </b>" + data.id + "<br/>";
+                var detalle = detalle + "<b>RUT: </b>" + data.rut + "<br/>";
+                var detalle = detalle + "<b>Razón Social: </b>" + data.razonSocial + "<br/>";
+                $("#detalleClientes").html(detalle);
+            });
+        }
+    </script>
+	</body>
+</html>

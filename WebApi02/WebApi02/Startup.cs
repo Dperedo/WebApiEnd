@@ -29,10 +29,17 @@ namespace WebApi02
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ContenerContext>(opt =>
-            opt.UseSqlServer("Server=DIEGOPEREDO-PC\\SQLEXPRESS;Database=Webapi02 ;User Id=sa; Password=sa1102"));
+            opt.UseSqlServer("Server=localhost\\SQL2017;Database=Webapi02;User Id=sa; Password=sa1105"));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            
+
+            services.AddCors(o => o.AddPolicy("WebPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +51,9 @@ namespace WebApi02
             }
 
             app.UseHttpsRedirection();
+
+            // Enable Cors
+            app.UseCors("WebPolicy");
 
             app.UseRouting();
 
