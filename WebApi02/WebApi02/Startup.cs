@@ -14,6 +14,12 @@ using Microsoft.EntityFrameworkCore;
 using WebApi02.Model;
 using WebApi02.Repository;
 
+//JWT
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.CodeAnalysis.Options;
+
 namespace WebApi02
 {
     public class Startup
@@ -29,7 +35,7 @@ namespace WebApi02
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ContenerContext>(opt =>
-            opt.UseSqlServer("Server=localhost\\SQL2017;Database=Webapi02;User Id=sa; Password=sa1105"));
+            opt.UseSqlServer("Server=DIEGOPEREDO-PC\\SQLEXPRESS;Database=Webapi02;User Id=sa; Password=sa1102"));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -39,6 +45,22 @@ namespace WebApi02
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             }));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                };
+            });
+
+            services.AddScoped<IUserService, UserService>();
 
         }
 
@@ -63,6 +85,10 @@ namespace WebApi02
             {
                 endpoints.MapControllers();
             });
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            //app.UseMvc();
+            
         }
     }
 }

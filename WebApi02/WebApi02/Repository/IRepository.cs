@@ -8,6 +8,7 @@ namespace WebApi02.Repository
 {
     public interface IRepository<T>
     {
+        
         IQueryable<T> GetAll();
         Task<T> GetByIdAsync(Guid id);
         Task<T> GetNoTrackedByIdAsync(Guid id);

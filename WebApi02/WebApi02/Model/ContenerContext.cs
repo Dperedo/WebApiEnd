@@ -18,5 +18,7 @@ namespace WebApi02.Model
         public DbSet<Estado> Estados { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<DetallePedido> DetallePedidos { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

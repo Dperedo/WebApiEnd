@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WebApi02.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using SQLitePCL;
 
 namespace WebApi02.Repository
 {
@@ -58,5 +59,8 @@ namespace WebApi02.Repository
                 return context;
             }
         }
+        
+
+
     }
 }

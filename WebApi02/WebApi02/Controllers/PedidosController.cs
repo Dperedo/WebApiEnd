@@ -29,6 +29,7 @@ namespace WebApi02.Controllers
             repository = _repository;
             repositoryCliente = _repoCliente;
             repositoryEstado = _repoEstado;
+            repositoryDetallePedido = _repoDetallePedido;
             repositoryProducto = _repoProducto;
         }
 
@@ -101,12 +102,19 @@ namespace WebApi02.Controllers
             var pedido =  repository.GetAll().Include(d => d.DetallePedidos).ThenInclude(p => p.Producto).FirstOrDefault(x => x.Id == id);
             if (pedido != null)
             {
-                
-                repository.Context.Remove(pedido);
-                for (int i=0;i<pedido.DetallePedidos.Count ;i++)
+
+                await repository.DeleteAsync(pedido.Id);
+
+                for (int i = 0; i < pedido.DetallePedidos.Count; i++)
                 {
-                    repository.Context.Remove(pedido.DetallePedidos[i]);
+                    await repositoryDetallePedido.DeleteAsync(pedido.DetallePedidos[i].Id);
                 }
+
+                //repository.Context.Remove(pedido);
+                //for (int i=0;i<pedido.DetallePedidos.Count ;i++)
+                //{
+                //    repository.Context.Remove(pedido.DetallePedidos[i]);
+                //}
             }
             
             await repository.Context.SaveChangesAsync();
