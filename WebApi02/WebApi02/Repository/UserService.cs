@@ -18,16 +18,14 @@ namespace WebApi02.Repository
     
     public interface IUserService
     {
-        Usuario Authenticate(string username, string password);
+        string Authenticate(UsuarioDto usermodel);
         IEnumerable<Usuario> GetAll();
         Usuario GetByUserName(string username);
         Usuario Create(Usuario user, string password);
         void Update(Usuario user, string password = null);
         void Delete(string username);
-        AuthenticateResponse Authenticate(AuthenticateRequest model);
-        IEnumerable<User> GetTodos();
-        User GetById(int id);
-        User Register(User user);
+        Usuario GetById(int id);
+        
        
         
     }
@@ -43,17 +41,19 @@ namespace WebApi02.Repository
             _appSettings = appSettings.Value;
         }
 
-        public Usuario Authenticate(string username, string password)
+        public string Authenticate(UsuarioDto usermodel)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) return null;
+            if (string.IsNullOrEmpty(usermodel.Username) || string.IsNullOrEmpty(usermodel.Password)) return null;
 
-            var user = context.Usuarios.SingleOrDefault(x => x.Username == username);
+            var user = context.Usuarios.SingleOrDefault(x => x.Username == usermodel.Username);
 
             if (user == null) return null;
 
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt)) return null;
+            if (!VerifyPasswordHash(usermodel.Password, user.PasswordHash, user.PasswordSalt)) return null;
 
-            return user;
+            var token = generateJwtToken(user);
+
+            return token;
         }
 
         public Usuario Create(Usuario user, string password)
@@ -101,7 +101,7 @@ namespace WebApi02.Repository
 
             if (user == null) throw new ArgumentException("Ususario no existe");
 
-            user.Email = userParam.Email;
+            
 
             if (!string.IsNullOrWhiteSpace(password))
             {
@@ -151,50 +151,16 @@ namespace WebApi02.Repository
             return true;
         }
 
-        //ejemplo WepApi
+        
 
-
-        public AuthenticateResponse Authenticate(AuthenticateRequest model)
+        public Usuario GetById(int id)
         {
-            var user = context.Users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
-
-            // return null if user not found
-            if (user == null) return null;
-
-            // authentication successful so generate jwt token
-            var token = generateJwtToken(user);
-
-            return new AuthenticateResponse(user, token);
-        }
-
-        public IEnumerable<User> GetTodos()
-        {
-            return context.Users;
-        }
-
-        public User GetById(int id)
-        {
-            return context.Users.FirstOrDefault(x => x.Id == id);
-        }
-
-        public User Register(User user)
-        {
-            if (string.IsNullOrWhiteSpace(user.Password))
-                throw new ArgumentException("Password es requeriso", "password");
-            if (context.Users.Any(x => x.Username == user.Username))
-                throw new ArgumentException("Username - " + user.Username + " ya existe");
-            
-
-            context.Users.Add(user);
-            context.SaveChanges();
-
-            return user;
-
+            return context.Usuarios.FirstOrDefault(x => x.Id == id);
         }
 
         // helper methods
 
-        private string generateJwtToken(User user)
+        private string generateJwtToken(Usuario user)
         {
             // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();

@@ -50,12 +50,14 @@ namespace WebApi02.Controllers
         }
 
         [HttpGet("{name}")]
+        [Authorize]
         public IActionResult ObtenerPorNombre(string name)
         {
             return Ok(userService.GetByUserName(name));
         }
 
         [HttpDelete("{name}")]
+        [Authorize]
         public void Eliminar(string name)
         {
             logger.LogInformation("Eliminado");
@@ -63,6 +65,7 @@ namespace WebApi02.Controllers
         }
 
         [HttpPut("{name}")]
+        [Authorize]
         public void Actualizar(string name)
         {
             logger.LogInformation("Actualizado");
@@ -76,12 +79,11 @@ namespace WebApi02.Controllers
         {
             IActionResult response = Unauthorized();
             
-            var user = userService.Authenticate(login.Username, login.Password);
+            var token = userService.Authenticate(login);
 
-            if (user != null)
+            if (token != null)
             {
-                var tokenString = GenerateJSONWebToken(user);
-                response = Ok(new { token = tokenString });
+                response = Ok(token);
             }
 
 
@@ -95,7 +97,6 @@ namespace WebApi02.Controllers
             logger.LogInformation("Comienza Registro");
             Usuario user = new Usuario();
             user.Username = userDto.Username;
-            user.Email = userDto.Email;
             try
             {
                 userService.Create(user, userDto.Password);
@@ -107,31 +108,30 @@ namespace WebApi02.Controllers
             }
         }
 
-        private string GenerateJSONWebToken(Usuario userInfo)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        //private string GenerateJSONWebToken(Usuario userInfo)
+        //{
+        //    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
+        //    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[] {
-                new Claim(JwtRegisteredClaimNames.Sub, userInfo.Username),
-                new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+        //    var claims = new[] {
+        //        new Claim(JwtRegisteredClaimNames.Sub, userInfo.Username),
+        //        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        //    };
 
-            //Se crea el token utilizando la clase JwtSecurityToken
-            //Se le pasa algunos datos como el editor (issuer), audiencia
-            // tiempo de expiración y la firma.
+        //    //Se crea el token utilizando la clase JwtSecurityToken
+        //    //Se le pasa algunos datos como el editor (issuer), audiencia
+        //    // tiempo de expiración y la firma.
 
-            var token = new JwtSecurityToken(config["Jwt:Issuer"],
-                config["Jwt:Issuer"],
-                claims,
-                expires: DateTime.Now.AddMinutes(120),
-                signingCredentials: credentials);
+        //    var token = new JwtSecurityToken(config["Jwt:Issuer"],
+        //        config["Jwt:Issuer"],
+        //        claims,
+        //        expires: DateTime.Now.AddMinutes(120),
+        //        signingCredentials: credentials);
 
-            //Finalmente el método JwtSecurityTokenHandler genera el JWT. 
-            //Este método espera un objeto de la clase JwtSecurityToken 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        //    //Finalmente el método JwtSecurityTokenHandler genera el JWT. 
+        //    //Este método espera un objeto de la clase JwtSecurityToken 
+        //    return new JwtSecurityTokenHandler().WriteToken(token);
+        //}
 
         //private Usuario AuthenticateUser(Usuario login)
         //{

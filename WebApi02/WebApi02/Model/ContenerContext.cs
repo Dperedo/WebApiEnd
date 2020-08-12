@@ -19,6 +19,5 @@ namespace WebApi02.Model
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<DetallePedido> DetallePedidos { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<User> Users { get; set; }
     }
 }

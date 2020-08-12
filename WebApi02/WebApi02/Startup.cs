@@ -37,8 +37,8 @@ namespace WebApi02
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ContenerContext>(opt =>
-            opt.UseSqlServer("Server=localhost\\sql2017;Database=Webapi02;User Id=sa; Password=sa1105"));
-            //opt.UseSqlServer("Server=DIEGOPEREDO-PC\\SQLEXPRESS;Database=Webapi02;User Id=sa; Password=sa1102"));
+            //opt.UseSqlServer("Server=localhost\\sql2017;Database=Webapi02;User Id=sa; Password=sa1105"));
+            opt.UseSqlServer("Server=DIEGOPEREDO-PC\\SQLEXPRESS;Database=Webapi02;User Id=sa; Password=sa1102"));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
